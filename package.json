@@ -1,28 +1,30 @@
 {
-  "name": "palettePicker-backend",
+  "name": "color-picker-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Color Picker backend",
+  "main": "server.js",
   "scripts": {
     "test": "jest --watchAll",
-    "start": "node server.js"
+    "start": "nodemon --exec babel-node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kaylaewood/colorPickerBackend.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kaylaewood/colorPickerBackend/issues"
-  },
-  "homepage": "https://github.com/kaylaewood/colorPickerBackend#readme",
+  "author": "Ben Firth & Kayla Wood",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "jest": "^25.1.0",
-    "knex": "^0.20.8",
-    "pg": "^7.18.1"
+    "jest": "^24.9.0",
+    "knex": "^0.20.3",
+    "pg": "^7.14.0",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.8.4",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^24.9.0",
+    "nodemon": "^2.0.1",
+    "regenerator-runtime": "^0.13.3"
   }
 }
