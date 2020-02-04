@@ -26,8 +26,28 @@ describe('Server', () => {
       const projects = response.body;
 
       expect(response.status).toBe(200);
-      expect(projects.length).toEqual(expectedProjects.length);
+      expect(projects[0].id).toEqual(expectedProjects[0].id);
     })
+  });
+
+  describe('GET /api/v1/projects/:id', () => {
+    it('should return a code of 200 and a single project if the project exists', async () => {
+      const expectedProject = await database('projects').first();
+      const { id } = expectedProject;
+      const response = await request(app).get(`/api/v1/projects/${id}`);
+      const result = response.body[0];
+
+      expect(response.status).toBe(200);
+      expect(result.id).toEqual(expectedProject.id);
+    });
+
+    it('should return a code of 404 if the project does not exist', async () => {
+      const invalidId = -100;
+      const response = await request(app).get(`/api/v1/projects/${invalidId}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toEqual(`A project with the id of ${invalidId} does not exist.`)
+    });
   });
 
 });
