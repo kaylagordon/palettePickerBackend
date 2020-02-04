@@ -37,7 +37,25 @@ app.get('/api/v1/projects/:id', async (request, response) => {
   } catch (error) {
     response.status(500).json({ error });
   }
+});
 
-})
+app.post('/api/v1/projects/', async (request, response) => {
+  const project = request.body;
+
+  for (let requiredParameter of ['name']) {
+    if (!project.hasOwnProperty(requiredParameter)) {
+      return response.status(422).send({ error: `The expected format is: { name: <String> }. You are missing the ${requiredParameter} property.` })
+    }
+  }
+
+  try {
+    const id = await database('projects').insert(project, 'id');
+    response.status(201).json({ ...project, id });
+  } catch (error) {
+    response.status(500).json({ error });
+  }
+
+});
+
 
 module.exports = app;
