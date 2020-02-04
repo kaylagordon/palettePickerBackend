@@ -59,6 +59,10 @@ app.post('/api/v1/projects/', async (request, response) => {
 app.delete('/api/v1/projects', (request, response) => {
   const { id } = request.body;
 
+  if (!id) {
+    return response.status(422).json({ error: 'The expected format is: { id: <Number> }. You are missing the id property.'})
+  }
+
   database('projects')
     .where('id', parseInt(id))
     .del()

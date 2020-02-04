@@ -81,7 +81,10 @@ describe('Server', () => {
     });
 
     it('should return a code of 422 if the payload is incorrect', async () => {
+      const response = await request(app).delete('/api/v1/projects').send({});
 
+      expect(response.status).toBe(422);
+      expect(response.body.error).toEqual('The expected format is: { id: <Number> }. You are missing the id property.')
     });
   });
 });
