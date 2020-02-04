@@ -51,21 +51,37 @@ describe('Server', () => {
   });
 
   describe('POST /api/v1/projects', () => {
-  it('should post a new student to the database', async () => {
-    const newProject = { name: 'Pants' };
-    const response = await request(app).post('/api/v1/projects').send(newProject);
-    const projects = await database('projects').where('id', response.body.id[0]);
-    const project = projects[0];
+    it('should post a new project to the database', async () => {
+      const newProject = { name: 'Pants' };
+      const response = await request(app).post('/api/v1/projects').send(newProject);
+      const projects = await database('projects').where('id', response.body.id[0]);
+      const project = projects[0];
 
-    expect(response.status).toBe(201);
-    expect(project.name).toEqual(newProject.name);
+      expect(response.status).toBe(201);
+      expect(project.name).toEqual(newProject.name);
+    });
+
+    it('should return a code of 422 if the payload is incorrect', async () => {
+      const newProject = { title: 'Pants' };
+      const response = await request(app).post('/api/v1/projects').send(newProject);
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toEqual('The expected format is: { name: <String> }. You are missing the name property.')
+    });
   });
 
-  it('should return a code of 422 if the payload is incorrect', async () => {
-    const newProject = { title: 'Pants' };
-    const response = await request(app).post('/api/v1/projects').send(newProject);
+  describe('DELETE /api/v1/projects', () => {
+    it('should delete a project from the database', async () => {
+      const expectedProject = await database('projects').first();
+      const { id } = expectedProject;
+      const response = await request(app).delete('/api/v1/projects').send({ id });
 
-    expect(response.status).toBe(422);
-    expect(response.body.error).toEqual('The expected format is: { name: <String> }. You are missing the name property.') });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(id);
+    });
+
+    it('should return a code of 422 if the payload is incorrect', async () => {
+
+    });
   });
 });
