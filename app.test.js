@@ -166,7 +166,7 @@ describe('Server', () => {
       expect(response.body).toEqual(id);
     });
 
-    it.skip('should return a code of 422 if the payload is incorrect', async () => {
+    it('should return a code of 422 if the payload is incorrect', async () => {
       const response = await request(app).delete('/api/v1/palettes').send({});
 
       expect(response.status).toBe(422);
