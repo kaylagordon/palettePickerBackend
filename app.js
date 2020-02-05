@@ -14,7 +14,7 @@ app.get('/', (request, response) => {
   response.send('We\'re going to test all the routes!');
 });
 
-app.get('/api/v1/projects/:id/palettes', async (request, response) => {
+app.get('/api/v1/palettes', async (request, response) => {
   try {
     const palettes = await database('palettes').select();
 
@@ -28,8 +28,8 @@ app.get('/api/v1/palettes/:id', async (request, response) => {
   const { id } = request.params;
 
   try {
-    const palette = await database('palettes').where('id', id).select();
-    palettes.length 
+    const palette = await database('palettes').where('id', id);
+    palette.length 
       ? response.status(200).json(palette[0]) 
       : response.status(404).json({
         error: `Could not find palette with the id: ${id}`
@@ -39,12 +39,12 @@ app.get('/api/v1/palettes/:id', async (request, response) => {
   }
 });
 
-app.post('/api/v1/palettes/', async (request, response) => {
+app.post('/api/v1/palettes', async (request, response) => {
   const palette = request.body;
 
-  for (let requiredParameter of ['name']) {
+  for (let requiredParameter of ['color1', 'color2', 'color3', 'color4', 'color5', 'project_id']) {
     if (!palette.hasOwnProperty(requiredParameter)) {
-      return response.status(422).send({ error: `The expected format is: { name: <String> }. You are missing the ${requiredParameter} property.` });
+      return response.status(422).send({ error: `The expected format is: { project_id: <Integer> }. You are missing the ${requiredParameter} property.` });
     };
   };
 
