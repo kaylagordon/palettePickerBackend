@@ -23,6 +23,51 @@ app.get('/api/v1/palettes', async (request, response) => {
     response.status(500).json({ error });
   }
 });
+
+app.get('/api/v1/palettes/:id', async (request, response) => {
+  const { id } = request.params;
+
+  try {
+    const palette = await database('palettes').where('id', id).select();
+    palettes.length 
+      ? response.status(200).json(palette[0]) 
+      : response.status(404).json({
+        error: `Could not find palette with the id: ${id}`
+      });
+  } catch (error) {
+    response.status(500).json({ error });
+  }
+});
+
+app.post('/api/v1/palettes/', async (request, response) => {
+  const palette = request.body;
+
+  for (let requiredParameter of ['name']) {
+    if (!palette.hasOwnProperty(requiredParameter)) {
+      return response.status(422).send({ error: `The expected format is: { name: <String> }. You are missing the ${requiredParameter} property.` });
+    };
+  };
+
+  try {
+    const id = await database('palettes').insert(palette, 'id');
+    response.status(201).json({ ...palette, id });
+  } catch (error) {
+    response.status(500).json({ error });
+  };
+});
+
+app.delete('/api/v1/palettes/:id', async (request, response) => {
+  const { id } = request.params;
+
+  await database('palettes').where('id', parseInt(id)).del();
+  
+  try {
+    response.status(200).json(id)
+  } catch (error) {
+    response.status(500).json({ error })
+  }
+});
+
 app.get('/api/v1/projects', async (request, response) => {
   try {
     const projects = await database('projects').select();
