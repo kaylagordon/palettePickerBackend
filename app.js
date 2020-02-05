@@ -1,5 +1,5 @@
-import express from 'express';
-import cors from 'cors';
+const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const environment = process.env.NODE_ENV || 'development';
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (request, response) => {
-  response.send('We\'re going to test all the routes!');
+  response.send('Welcome to Palette Picker!');
 });
 
 app.get('/api/v1/palettes', async (request, response) => {
