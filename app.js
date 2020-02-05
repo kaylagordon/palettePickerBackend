@@ -14,7 +14,7 @@ app.get('/', (request, response) => {
   response.send('We\'re going to test all the routes!');
 });
 
-app.get('/api/v1/palettes', async (request, response) => {
+app.get('/api/v1/projects/:id/palettes', async (request, response) => {
   try {
     const palettes = await database('palettes').select();
 
@@ -60,7 +60,7 @@ app.delete('/api/v1/palettes/:id', async (request, response) => {
   const { id } = request.params;
 
   await database('palettes').where('id', parseInt(id)).del();
-  
+
   try {
     response.status(200).json(id)
   } catch (error) {
