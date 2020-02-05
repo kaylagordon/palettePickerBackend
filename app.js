@@ -56,11 +56,14 @@ app.post('/api/v1/palettes', async (request, response) => {
   };
 });
 
-app.delete('/api/v1/palettes/:id', async (request, response) => {
-  const { id } = request.params;
+app.delete('/api/v1/palettes', async (request, response) => {
+  const { id } = request.body;
 
+  if (!id) {
+    return response.status(422).json({ error: 'The expected format is: { id: <Number> }. You are missing the id property.'})
+  };
   await database('palettes').where('id', parseInt(id)).del();
-
+  
   try {
     response.status(200).json(id)
   } catch (error) {
