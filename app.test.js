@@ -14,8 +14,9 @@ describe('Server', () => {
 
   describe('init', () => {
     it('should return a 200 status', async () => {
-      const res = await request(app).get('/')
-      expect(res.status).toBe(200)
+      const res = await request(app).get('/');
+      expect(res.status).toBe(200);
+      return;
     });
   });
 
@@ -27,6 +28,7 @@ describe('Server', () => {
 
       expect(response.status).toBe(200);
       expect(projects[0].id).toEqual(expectedProjects[0].id);
+      return;
     });
   });
 
@@ -39,6 +41,7 @@ describe('Server', () => {
 
       expect(response.status).toBe(200);
       expect(result.id).toEqual(expectedProject.id);
+      return;
     });
 
     it('should return a code of 404 if the project does not exist', async () => {
@@ -46,7 +49,8 @@ describe('Server', () => {
       const response = await request(app).get(`/api/v1/projects/${invalidId}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toEqual(`A project with the id of ${invalidId} does not exist.`)
+      expect(response.body.error).toEqual(`A project with the id of ${invalidId} does not exist.`);
+      return;
     });
   });
 
@@ -59,6 +63,7 @@ describe('Server', () => {
 
       expect(response.status).toBe(201);
       expect(project.name).toEqual(newProject.name);
+      return;
     });
 
     it('should return a code of 422 if the payload is incorrect', async () => {
@@ -66,7 +71,8 @@ describe('Server', () => {
       const response = await request(app).post('/api/v1/projects').send(newProject);
 
       expect(response.status).toBe(422);
-      expect(response.body.error).toEqual('The expected format is: { name: <String> }. You are missing the name property.')
+      expect(response.body.error).toEqual('The expected format is: { name: <String> }. You are missing the name property.');
+      return;
     });
   });
 
@@ -78,13 +84,15 @@ describe('Server', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(id);
+      return;
     });
 
     it('should return a code of 422 if the payload is incorrect', async () => {
       const response = await request(app).delete('/api/v1/projects').send({});
 
       expect(response.status).toBe(422);
-      expect(response.body.error).toEqual('The expected format is: { id: <Number> }. You are missing the id property.')
+      expect(response.body.error).toEqual('The expected format is: { id: <Number> }. You are missing the id property.');
+      return;
     });
   });
 });
