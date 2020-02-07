@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test jest --watchAll",
+    "test": "NODE_ENV=test jest --forceExit",
     "test:watch": "jest --watchAll"
   },
   "author": "Ben Firth & Kayla Wood",
