@@ -6,7 +6,7 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
-app.locals.title = 'Test Server';
+app.locals.title = 'Palette Picker';
 app.use(cors());
 app.use(express.json());
 
@@ -29,8 +29,8 @@ app.get('/api/v1/palettes/:id', async (request, response) => {
 
   try {
     const palette = await database('palettes').where('id', id);
-    palette.length 
-      ? response.status(200).json(palette[0]) 
+    palette.length
+      ? response.status(200).json(palette[0])
       : response.status(404).json({
         error: `Could not find palette with the id: ${id}`
       });
@@ -63,7 +63,7 @@ app.delete('/api/v1/palettes', async (request, response) => {
     return response.status(422).json({ error: 'The expected format is: { id: <Number> }. You are missing the id property.'})
   };
   await database('palettes').where('id', parseInt(id)).del();
-  
+
   try {
     response.status(200).json(id)
   } catch (error) {
