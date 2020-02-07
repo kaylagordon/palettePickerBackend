@@ -4,8 +4,9 @@
   "description": "Color Picker backend",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watchAll",
-    "start": "nodemon --exec babel-node server.js"
+    "start": "node server.js",
+    "test" : "jest --forceExit",
+    "test:watch": "jest --watchAll"
   },
   "author": "Ben Firth & Kayla Wood",
   "license": "MIT",
