@@ -1,6 +1,6 @@
 const app = require('./app');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 app.locals.title = 'Palette Picker';
 
 app.listen(app.get('port'), () => {
