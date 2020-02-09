@@ -99,11 +99,11 @@ app.get('/api/v1/projects/:id', async (request, response) => {
 app.post('/api/v1/projects', async (request, response) => {
   const project = request.body;
 
-  for (let requiredParameter of ['name']) {
-    if (!project.hasOwnProperty(requiredParameter)) {
-      return response.status(422).send({ error: `The expected format is: { name: <String> }. You are missing the ${requiredParameter} property.` });
-    };
-  };
+  if (!project.name) {
+    return response.status(422).json({
+      error: 'You are missing a name property for this project'
+    });
+  }
 
   try {
     const id = await database('projects').insert(project, 'id');
