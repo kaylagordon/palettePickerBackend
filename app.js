@@ -96,7 +96,7 @@ app.get('/api/v1/projects/:id', async (request, response) => {
   }
 });
 
-app.post('/api/v1/projects/', async (request, response) => {
+app.post('/api/v1/projects', async (request, response) => {
   const project = request.body;
 
   for (let requiredParameter of ['name']) {
