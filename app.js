@@ -103,7 +103,15 @@ app.post('/api/v1/projects', async (request, response) => {
     return response.status(422).json({
       error: 'You are missing a name property for this project'
     });
-  }
+  };
+
+  const name = await database('projects').where('name', project.name)
+
+  if (name.length >= 1) {
+    return response.status(400).json({
+      error: `A project with the name ${project.name} already exists.`
+    });
+  };
 
   try {
     const id = await database('projects').insert(project, 'id');
