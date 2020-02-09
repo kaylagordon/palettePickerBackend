@@ -54,7 +54,7 @@ describe('Server', () => {
     it('should post a new project to the database', async () => {
       const newProject = { name: 'Pants' };
       const response = await request(app).post('/api/v1/projects').send(newProject);
-      const projects = await database('projects').where('id', response.body.id[0]);
+      const projects = await database('projects').where('id', response.body.id);
       const project = projects[0];
 
       expect(response.status).toBe(201);
@@ -66,7 +66,7 @@ describe('Server', () => {
       const response = await request(app).post('/api/v1/projects').send(newProject);
 
       expect(response.status).toBe(422);
-      expect(response.body.error).toEqual('The expected format is: { name: <String> }. You are missing the name property.');
+      expect(response.body.error).toEqual('You are missing a name property for this project')
     });
   });
 
