@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "node"
+services:
+  - postgresql
+before_script:
+  - psql -c 'CREATE DATABASE projects_test;' -U postgres
+  - knex migrate:latest --env=test
+  - knex seed:run --env=test
