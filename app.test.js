@@ -76,7 +76,7 @@ describe('Server', () => {
       const expectedProject = await database('projects').first();
       const { id } = expectedProject;
       const response = await request(app).put(`/api/v1/projects/${id}`).send(newName);
-      const projects = await database('projects').where('id', response.body.id);
+      const projects = await database('projects').where('id', id);
       const project = projects[0];
 
       expect(response.status).toBe(200);
