@@ -56,16 +56,19 @@ describe('Server', () => {
     it('should post a new palette to the database', async () => {
       const expectedProject = await database('projects').first();
       const { id } = expectedProject;
+      console.log(id);
       const newpalette = {
-        project_id: id,
+        name: 'test palette',
         color1: '1221b',
         color2: '21122b',
         color3: '34433b',
         color4: '43344b',
-        color5: '56655b'
+        color5: '56655b',
+        project_id: `${id}`,
       };
       const response = await request(app).post('/api/v1/palettes').send(newpalette);
-      const palettes = await database('palettes').where('color1', response.body.color1);
+      console.log(response);
+      const palettes = await database('palettes').where('id', response.body.id).select();
 
       expect(response.status).toBe(201);
       expect(palettes[0].color1).toEqual(newpalette.color1);
@@ -91,7 +94,6 @@ describe('Server', () => {
       const expectedPallete = await database('palettes').first();
       const { id } = expectedPallete;
       const response = await request(app).delete('/api/v1/palettes').send({ id });
-      console.log('yay girl', response.status);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(id);

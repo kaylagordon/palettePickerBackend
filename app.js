@@ -54,12 +54,12 @@ app.post('/api/v1/palettes', async (request, response) => {
   };
 
   try {
+    console.log('before id', palette);
     const id = await database('palettes').insert(palette, 'id');
-    response.status(201).json({ ...palette, id });
-    return;
+    console.log('after id');
+    return response.status(201).json({ id: id[0] });
   } catch (error) {
-    response.status(500).json({ error });
-    return;
+    return response.status(500).json({ error });
   };
 });
 
