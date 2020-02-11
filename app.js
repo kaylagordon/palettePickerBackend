@@ -146,8 +146,6 @@ app.put('/api/v1/projects/:id', async (request, response) => {
     });
   };
 
-  console.log(id);
-
   try {
     const project = await database('projects')
       .where('id', id)
