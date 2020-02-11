@@ -136,6 +136,30 @@ app.post('/api/v1/projects', async (request, response) => {
   };
 });
 
+app.put('/api/v1/projects/:id', async (request, response) => {
+  const id = parseInt(request.params.id);
+  const newName = request.body;
+
+  if (!newName.name) {
+    return response.status(422).json({
+      error: 'You are missing a name property for this project'
+    });
+  };
+
+  console.log(id);
+
+  try {
+    const project = await database('projects')
+      .where('id', id)
+      .update({ id, name: newName.name });
+
+    response.status(200).json(project);
+  } catch (error) {
+    response.status(500).json({ error });
+    return;
+  };
+});
+
 app.delete('/api/v1/projects', (request, response) => {
   const { id } = request.body;
 
