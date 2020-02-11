@@ -47,9 +47,9 @@ app.get('/api/v1/palettes/:id', async (request, response) => {
 app.post('/api/v1/palettes', async (request, response) => {
   const palette = request.body;
 
-  for (let requiredParameter of ['color1', 'color2', 'color3', 'color4', 'color5', 'project_id']) {
+  for (let requiredParameter of ['color1', 'color2', 'color3', 'color4', 'color5', 'project_id', 'name']) {
     if (!palette.hasOwnProperty(requiredParameter)) {
-      return response.status(422).send({ error: `The expected format is: { project_id: <Integer> }. You are missing the ${requiredParameter} property.` });
+      return response.status(422).send({ error: `The expected format is: { project_id: <Integer>, color1: <String>, color2: <String>, color3: <String>, color4: <String>, color5: <String>, name: <String> }. You are missing the ${requiredParameter} property.` });
     };
   };
 
