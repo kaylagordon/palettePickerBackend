@@ -70,6 +70,30 @@ describe('Server', () => {
     });
   });
 
+  describe('PUT /api/v1/projects/:id', () => {
+    it('should change the name property of a specified project', async () => {
+      const newName = { name: 'test PUT' };
+      const expectedProject = await database('projects').first();
+      const { id } = expectedProject;
+      const response = await request(app).put(`/api/v1/projects/${id}`).send(newName);
+      const projects = await database('projects').where('id', response.body.id);
+      const project = projects[0];
+
+      expect(response.status).toBe(200);
+      expect(project.name).toEqual(newName.name);
+    });
+
+    it('should return a code of 422 if the payload is incorrect', async () => {
+      const newName = { title: 'Pants'};
+      const expectedProject = await database('projects').first();
+      const { id } = expectedProject;
+      const response = await request(app).put(`/api/v1/projects/${id}`).send(newName);
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toEqual('You are missing a name property for this project');
+    });
+  });
+
   describe('DELETE /api/v1/projects', () => {
     it('should delete a project from the database', async () => {
       const expectedProject = await database('projects').first();
