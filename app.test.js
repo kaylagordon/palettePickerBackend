@@ -50,6 +50,47 @@ describe('Server', () => {
         expect(response.body.error).toEqual(`Could not find palette with the id: -100`)
       });
     });
+
+    describe('GET endpoint for all palettes with chosen color', () => {
+      it('should return a 200 with all palettes that include the queried hex code', async () => {
+        // Set up DB with two palettes that meet query
+        const PaletteOne = {
+          name: 'new palette one',
+          color1: '1111a',
+          color2: '22222b',
+          color3: '111111',
+          color4: '111111',
+          color5: '111111'
+        };
+        const PaletteTwo = {
+          name: 'new palette two',
+          color1: '22222a',
+          color2: 'FFFFFF',
+          color3: '111111',
+          color4: '111111',
+          color5: '111111'
+        };
+
+        const postOne = await request(app).post(`/api/v1/palettes`).send(PaletteOne);
+        const postTwo = await request(app).post(`/api/v1/palettes`).send(PaletteTwo);
+        const colorSearch = '?chosenColor=22222a';
+        const expectedResponse = { palettes: [
+          {
+            name: 'new palette one',
+            color1: '1111a',
+            color2: '22222b',
+            color3: '111111',
+            color4: '111111',
+            color5: '111111'
+          },
+        ]};
+        const response = await request(app).get(`/api/v1/palettes/chooseColors/${colorSearch}`);
+        const searchedPalettes = response.body;
+        console.log(searchedPalettes);
+        expect(response.status).toBe(200);
+        expect(searchedPalettes.filteredPalettes[0].color1).toEqual(expectedResponse.palettes[0].color1);
+      });
+    });
   });
 
   describe('POST /api/v1/palettes', () => {
@@ -67,7 +108,6 @@ describe('Server', () => {
         project_id: `${id}`,
       };
       const response = await request(app).post('/api/v1/palettes').send(newpalette);
-      console.log(response);
       const palettes = await database('palettes').where('id', response.body.id).select();
 
       expect(response.status).toBe(201);

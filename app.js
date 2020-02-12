@@ -18,11 +18,36 @@ app.get('/api/v1/palettes', async (request, response) => {
   try {
     const palettes = await database('palettes').select();
 
-    response.status(200).json({ palettes });
-    return;
+    return response.status(200).json({ palettes });
   } catch (error) {
-    response.status(500).json({ error });
-    return;
+    return response.status(500).json({ error });
+  }
+});
+
+app.get('/api/v1/palettes/chooseColors', async (request, response) => {
+  // `/api/v1/palettes/chosenColor=${}`
+  const chosenColor = request.query.chosenColor;
+  let filteredPalettes;
+
+  if (chosenColor) {
+    filteredPalettes = await database('palettes').select();
+  } else {
+    response.status(422).json({ error:
+      'Did not include a color.  Colors must be 6 characters or less, without a # preceding them.'
+    })
+  }
+
+  filteredPalettes = await database('palettes').select()
+    .where('color1', `${chosenColor}`)
+    .orWhere('color2', `${chosenColor}`)
+    .orWhere('color3', `${chosenColor}`)
+    .orWhere('color4', `${chosenColor}`)
+    .orWhere('color5', `${chosenColor}`);
+
+  try {
+    return response.status(200).json({ filteredPalettes });
+  } catch (error) {
+    return response.status(500).json({ error });
   }
 });
 
@@ -54,9 +79,7 @@ app.post('/api/v1/palettes', async (request, response) => {
   };
 
   try {
-    console.log('before id', palette);
     const id = await database('palettes').insert(palette, 'id');
-    console.log('after id');
     return response.status(201).json({ id: id[0] });
   } catch (error) {
     return response.status(500).json({ error });
