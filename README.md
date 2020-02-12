@@ -13,7 +13,7 @@ This is used by our front-end application [colorPicker](https://github.com/kayla
 - Clone this repo and run npm install
 - Run the server by using nodemon server.js
 
-The server will run on `http://localhost:3001` locally, and `http://palettepickerapp.herokuapp.com/api/v1/projects`.
+The server will run on `http://localhost:3001` locally, and `http://palettepickerapp.herokuapp.com/api/v1` on Heroku.
 
 ## Endpoints  
 
