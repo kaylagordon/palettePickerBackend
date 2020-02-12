@@ -24,8 +24,34 @@ app.get('/api/v1/palettes', async (request, response) => {
       return response.send('You don\'t have any palettes yet!')
     }
   } catch (error) {
-    response.status(500).json({ error });
-    return;
+    return response.status(500).json({ error });
+  }
+});
+
+app.get('/api/v1/palettes/chooseColors', async (request, response) => {
+  // `/api/v1/palettes/chosenColor=${}`
+  const chosenColor = request.query.chosenColor;
+  let filteredPalettes;
+
+  if (chosenColor) {
+    filteredPalettes = await database('palettes').select();
+  } else {
+    response.status(422).json({ error:
+      'Did not include a color.  Colors must be 6 characters or less, without a # preceding them.'
+    })
+  }
+
+  filteredPalettes = await database('palettes').select()
+    .where('color1', `${chosenColor}`)
+    .orWhere('color2', `${chosenColor}`)
+    .orWhere('color3', `${chosenColor}`)
+    .orWhere('color4', `${chosenColor}`)
+    .orWhere('color5', `${chosenColor}`);
+
+  try {
+    return response.status(200).json({ filteredPalettes });
+  } catch (error) {
+    return response.status(500).json({ error });
   }
 });
 
@@ -58,11 +84,9 @@ app.post('/api/v1/palettes', async (request, response) => {
 
   try {
     const id = await database('palettes').insert(palette, 'id');
-    response.status(201).json({ ...palette, id });
-    return;
+    return response.status(201).json({ id: id[0] });
   } catch (error) {
-    response.status(500).json({ error });
-    return;
+    return response.status(500).json({ error });
   };
 });
 
@@ -138,6 +162,28 @@ app.post('/api/v1/projects', async (request, response) => {
   try {
     const id = await database('projects').insert(project, 'id');
     response.status(201).json({ ...project, id: id[0] });
+  } catch (error) {
+    response.status(500).json({ error });
+    return;
+  };
+});
+
+app.put('/api/v1/projects/:id', async (request, response) => {
+  const id = parseInt(request.params.id);
+  const newName = request.body;
+
+  if (!newName.name) {
+    return response.status(422).json({
+      error: 'You are missing a name property for this project'
+    });
+  };
+
+  try {
+    const project = await database('projects')
+      .where('id', id)
+      .update({ id, name: newName.name });
+
+    response.status(200).json(project);
   } catch (error) {
     response.status(500).json({ error });
     return;
