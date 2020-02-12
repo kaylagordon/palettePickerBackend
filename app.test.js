@@ -86,7 +86,6 @@ describe('Server', () => {
         ]};
         const response = await request(app).get(`/api/v1/palettes/chooseColors/${colorSearch}`);
         const searchedPalettes = response.body;
-        console.log(searchedPalettes);
         expect(response.status).toBe(200);
         expect(searchedPalettes.filteredPalettes[0].color1).toEqual(expectedResponse.palettes[0].color1);
       });
@@ -97,7 +96,6 @@ describe('Server', () => {
     it('should post a new palette to the database', async () => {
       const expectedProject = await database('projects').first();
       const { id } = expectedProject;
-      console.log(id);
       const newpalette = {
         name: 'test palette',
         color1: '1221b',
