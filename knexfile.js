@@ -14,7 +14,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: 'https://palettepickerapp.herokuapp.com',
     migrations: {
       directory: './db/migrations'
     },
