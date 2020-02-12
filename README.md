@@ -27,6 +27,6 @@ The server will run on `http://localhost:3000`.
 | Get specific project |`/api/v1/projects/:id`| GET | N/A | `{}` |
 | Post a project |`/api/v1/projects`| POST | `{ name: <String> }` | `{ id: <Number> }` |
 | Delete a project |`/api/v1/projects/:id`| DELETE | N/A | |
-| Get all palettes with specific color |`/api/v1/palettes?chosenColor=:colorcode`| GET | N/A | `{palettes: [{}, {}, ...]}` |
+| Get all palettes with specific color |`/api/v1/palettes/chooseColors?chosenColor=:colorcode`| GET | No Body, but a query param of chosenColor | `{palettes: [{}, {}, ...]}` |
 | Update a project name |`/api/v1/projects/:id`| PATCH | `{ name: <String> }` | `{ id: <Number> }` |
 
