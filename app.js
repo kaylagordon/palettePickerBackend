@@ -72,7 +72,8 @@ app.delete('/api/v1/palettes', async (request, response) => {
   if (!id) {
     return response.status(422).json({ error: 'The expected format is: { id: <Number> }. You are missing the id property.'})
   };
-  await database('palettes').where('id', parseInt(id)).del();
+
+  await database('palettes').where('id', id).del();
 
   try {
     response.status(200).json(id);
