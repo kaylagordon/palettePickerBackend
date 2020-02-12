@@ -151,5 +151,8 @@ app.delete('/api/v1/projects', (request, response) => {
   return;
 });
 
+app.get(*, (req, res) => {
+  res.status(404).send({ error: page not found })
+})
 
 module.exports = app;
