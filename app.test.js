@@ -26,7 +26,7 @@ describe('Server', () => {
       const projects = response.body;
 
       expect(response.status).toBe(200);
-      expect(projects[0].id).toEqual(expectedProjects[0].id);
+      expect(projects.projects[0].id).toEqual(expectedProjects[0].id);
     });
   });
 
