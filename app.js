@@ -18,8 +18,11 @@ app.get('/api/v1/palettes', async (request, response) => {
   try {
     const palettes = await database('palettes').select();
 
-    response.status(200).json({ palettes });
-    return;
+    if (palettes.length) {
+      return response.status(200).json({ palettes });
+    } else {
+      return response.status(200).json('You don\'t have any palettes yet!')
+    }
   } catch (error) {
     response.status(500).json({ error });
     return;
@@ -83,8 +86,12 @@ app.delete('/api/v1/palettes', async (request, response) => {
 app.get('/api/v1/projects', async (request, response) => {
   try {
     const projects = await database('projects').select();
-    response.status(200).json(projects);
-    return;
+
+    if (projects.length) {
+      return response.status(200).json({ projects });
+    } else {
+      return response.status(200).json('You don\'t have any projects yet!')
+    }
   } catch (error) {
     response.status(404).send({ error });
     return;
