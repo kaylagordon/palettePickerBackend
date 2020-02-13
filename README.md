@@ -1,4 +1,4 @@
-# palettePickerBackend
+# PALETTE PICKER (Backend)
 
 ## Mod 4 Paired Project
 ### Dev SQUAD
