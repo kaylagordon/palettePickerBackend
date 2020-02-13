@@ -25,7 +25,7 @@ describe('Server', () => {
         const expected = await database('palettes').select();
         const response = await request(app).get('/api/v1/palettes');
         const palettes = response.body;
-        
+
         expect(response.status).toBe(200);
         expect(palettes.palettes[0].id).toEqual(expected[0].id);
       });
@@ -37,15 +37,15 @@ describe('Server', () => {
         const { id } = expected;
         const response = await request(app).get(`/api/v1/palettes/${id}`);
         const result = response.body;
-  
+
         expect(response.status).toBe(200);
         expect(result.id).toEqual(id);
       });
-  
+
       it('should return a code of 404 if the project does not exist', async () => {
         const invalidId = -100;
         const response = await request(app).get(`/api/v1/palettes/${invalidId}`);
-  
+
         expect(response.status).toBe(404);
         expect(response.body.error).toEqual(`Could not find palette with the id: -100`)
       });
@@ -106,6 +106,9 @@ describe('Server', () => {
         project_id: `${id}`,
       };
       const response = await request(app).post('/api/v1/palettes').send(newpalette);
+      console.log(response);
+      console.log(response.body);
+      console.log(response.id);
       const palettes = await database('palettes').where('id', response.body.id).select();
 
       expect(response.status).toBe(201);
@@ -235,6 +238,30 @@ describe('Server', () => {
 
       expect(response.status).toBe(422);
       expect(response.body.error).toEqual('The expected format is: { id: <Number> }. You are missing the id property.');
+    });
+  });
+
+  describe('PATCH /api/v1/palettes/:id', () => {
+    it('should change the name property of a specified project', async () => {
+      const newColor = { changeColor: 'color1', newColor: 'BBBBBBB' };
+      const expectedPalette = await database('palettes').first();
+      const { id } = expectedPalette;
+      const response = await request(app).patch(`/api/v1/palettes/${id}`).send(newColor);
+      const palettes = await database('palettes').where('id', id);
+      const palette = palettes[0];
+
+      expect(response.status).toBe(200);
+      expect(palette.color1).toEqual('BBBBBBB');
+    });
+
+    it('should return a code of 422 if the payload is incorrect', async () => {
+      const newColor = { newColor: 'BBBBBBB' };
+      const expectedPalette = await database('palettes').first();
+      const { id } = expectedPalette;
+      const response = await request(app).patch(`/api/v1/palettes/${id}`).send(newColor);
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toEqual('You are missing a property! We expect { changeColor: <String>, newColor: <String> }');
     });
   });
 });

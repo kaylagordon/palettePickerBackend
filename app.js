@@ -29,7 +29,6 @@ app.get('/api/v1/palettes', async (request, response) => {
 });
 
 app.get('/api/v1/palettes/chooseColors', async (request, response) => {
-  // `/api/v1/palettes/chosenColor=${}`
   const chosenColor = request.query.chosenColor;
   let filteredPalettes;
 
@@ -106,6 +105,27 @@ app.delete('/api/v1/palettes', async (request, response) => {
     response.status(500).json({ error });
     return;
   }
+});
+
+app.patch('/api/v1/palettes/:id', async (request, response) => {
+  const paletteId = parseInt(request.params.id);
+  const { changeColor, newColor } = request.body;
+
+  if (!changeColor || !newColor) {
+    return response.status(422).json({
+      error: 'You are missing a property! We expect { changeColor: <String>, newColor: <String> }'
+    });
+  };
+
+  try {
+    const palette = await database('palettes')
+      .where('id', paletteId)
+      .update({[changeColor]: newColor}, [changeColor]);
+    response.status(200).json(palette);
+  } catch (error) {
+    response.status(500).json({ error });
+    return;
+  };
 });
 
 app.get('/api/v1/projects', async (request, response) => {
