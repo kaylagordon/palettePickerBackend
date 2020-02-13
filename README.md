@@ -1,7 +1,7 @@
 # PALETTE PICKER (Backend)
 
-## Mod 4 Paired Project
-### Dev SQUAD
+### Mod 4 Paired Project
+## Dev SQUAD
 [Benjamin Firth](https://github.com/benjamin-firth)  
 [Kayla Wood](https://github.com/kaylaewood)  
 
