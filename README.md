@@ -1,6 +1,6 @@
 # PALETTE PICKER (Backend)
 
-### Mod 4 Paired Project
+### Mod 4 Paired Project at Turing School of Software & Design
 ## Dev SQUAD
 [Benjamin Firth](https://github.com/benjamin-firth)  
 [Kayla Wood](https://github.com/kaylaewood)  
